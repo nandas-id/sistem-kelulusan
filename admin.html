@@ -17,15 +17,54 @@
             border-radius: 0.75rem;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #68D391;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #68D391;
+        }
     </style>
 </head>
 <body class="p-4">
-    <div class="container mx-auto max-w-4xl py-8">
+    <!-- Login Section -->
+    <div id="login-section" class="container mx-auto max-w-md py-12">
+        <div class="admin-container p-6 md:p-8">
+            <div class="text-center mb-8">
+                <h1 class="text-2xl font-bold text-gray-800 mb-2">Admin Login</h1>
+                <div class="h-1 w-16 bg-blue-600 mx-auto rounded-full"></div>
+            </div>
+            
+            <div id="login-error" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 hidden">
+                <p class="font-medium">Login Gagal!</p>
+                <p class="text-sm">Username atau password salah.</p>
+            </div>
+            
+            <div class="space-y-4">
+                <div>
+                    <label for="login-username" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                    <input type="text" id="login-username" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Username">
+                </div>
+                <div>
+                    <label for="login-password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <input type="password" id="login-password" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Password">
+                </div>
+                <button id="login-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded">Login</button>
+            </div>
+            
+            <div class="mt-6 text-center text-sm text-gray-500">
+                <p>Default: username "admin" password "admin"</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel Section -->
+    <div id="admin-panel" class="container mx-auto max-w-4xl py-8 hidden">
         <div class="admin-container p-6 md:p-8">
             <header class="mb-8">
                 <div class="flex justify-between items-center mb-6">
                     <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Admin Panel - Sistem Kelulusan</h1>
-                    <a href="index.html" class="text-blue-600 hover:text-blue-800 text-sm">Lihat Halaman Utama</a>
+                    <button id="logout-btn" class="text-red-600 hover:text-red-800 text-sm">Logout</button>
                 </div>
                 <div class="h-1 w-24 bg-blue-600 rounded-full"></div>
             </header>
@@ -33,67 +72,197 @@
             <div class="mb-8">
                 <div class="bg-blue-50 border-l-4 border-blue-500 text-blue-700 p-4 mb-6">
                     <p class="font-medium">Halaman Admin</p>
-                    <p class="text-sm">Gunakan halaman ini untuk mengelola data siswa. Data yang diubah akan langsung tersedia di halaman utama.</p>
+                    <p class="text-sm">Gunakan halaman ini untuk mengelola data siswa dan pengaturan kelulusan.</p>
                 </div>
                 
-                <div class="bg-gray-50 p-5 rounded-lg mb-6">
-                    <h2 class="text-lg font-medium text-gray-800 mb-4">Tambah/Edit Data Siswa</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">NISN</label>
-                            <input type="text" id="admin-nisn" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="NISN">
+                <!-- Tabs -->
+                <div class="border-b border-gray-200 mb-6">
+                    <ul class="flex flex-wrap -mb-px">
+                        <li class="mr-2">
+                            <button id="tab-data" class="inline-block py-2 px-4 text-blue-600 border-b-2 border-blue-600 font-medium">Data Siswa</button>
+                        </li>
+                        <li class="mr-2">
+                            <button id="tab-settings" class="inline-block py-2 px-4 text-gray-500 hover:text-gray-700 font-medium">Pengaturan</button>
+                        </li>
+                        <li class="mr-2">
+                            <button id="tab-password" class="inline-block py-2 px-4 text-gray-500 hover:text-gray-700 font-medium">Ubah Password</button>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Data Siswa Tab -->
+                <div id="content-data" class="tab-content">
+                    <div class="bg-gray-50 p-5 rounded-lg mb-6">
+                        <h2 class="text-lg font-medium text-gray-800 mb-4">Tambah/Edit Data Siswa</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">NISN</label>
+                                <input type="text" id="admin-nisn" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="NISN">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Nama</label>
+                                <input type="text" id="admin-nama" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Nama Lengkap">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                                <select id="admin-status" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                    <option value="Lulus">Lulus</option>
+                                    <option value="Tidak Lulus">Tidak Lulus</option>
+                                </select>
+                            </div>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Nama</label>
-                            <input type="text" id="admin-nama" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Nama Lengkap">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                            <select id="admin-status" class="w-full px-3 py-2 border border-gray-300 rounded-md">
-                                <option value="Lulus">Lulus</option>
-                                <option value="Tidak Lulus">Tidak Lulus</option>
-                            </select>
+                        <div class="flex space-x-2">
+                            <button id="save-data" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded">Simpan</button>
+                            <button id="clear-form" class="bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded">Bersihkan</button>
                         </div>
                     </div>
-                    <div class="flex space-x-2">
-                        <button id="save-data" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded">Simpan</button>
-                        <button id="clear-form" class="bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded">Bersihkan</button>
+                    
+                    <div class="mb-4 flex justify-between items-center">
+                        <h2 class="text-lg font-medium text-gray-800">Daftar Siswa</h2>
+                        <div class="flex space-x-2">
+                            <button id="import-data" class="bg-green-600 hover:bg-green-700 text-white text-sm py-1 px-3 rounded">Import CSV</button>
+                            <button id="export-data" class="bg-purple-600 hover:bg-purple-700 text-white text-sm py-1 px-3 rounded">Export CSV</button>
+                            <input type="file" id="file-input" accept=".csv" class="hidden">
+                        </div>
+                    </div>
+                    
+                    <div class="overflow-x-auto bg-white border border-gray-200 rounded-lg">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">NISN</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="data-table" class="bg-white divide-y divide-gray-200">
+                                <!-- Data will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="mt-4 text-right text-sm text-gray-500">
+                        Total: <span id="total-count">0</span> siswa
                     </div>
                 </div>
                 
-                <div class="mb-4 flex justify-between items-center">
-                    <h2 class="text-lg font-medium text-gray-800">Daftar Siswa</h2>
-                    <div class="flex space-x-2">
-                        <button id="import-data" class="bg-green-600 hover:bg-green-700 text-white text-sm py-1 px-3 rounded">Import CSV</button>
-                        <button id="export-data" class="bg-purple-600 hover:bg-purple-700 text-white text-sm py-1 px-3 rounded">Export CSV</button>
-                        <input type="file" id="file-input" accept=".csv" class="hidden">
+                <!-- Pengaturan Tab -->
+                <div id="content-settings" class="tab-content hidden">
+                    <div class="bg-gray-50 p-5 rounded-lg mb-6">
+                        <h2 class="text-lg font-medium text-gray-800 mb-4">Pengaturan Kelulusan</h2>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Tahun Ajaran</label>
+                                <input type="text" id="tahun-ajaran-input" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Contoh: 2024/2025">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Pengumuman</label>
+                                <input type="datetime-local" id="tanggal-pengumuman-input" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                            </div>
+                            
+                            <div class="flex items-center">
+                                <label class="block text-sm font-medium text-gray-700 mr-3">Status Pengumuman:</label>
+                                <div class="relative inline-block w-12 mr-2 align-middle select-none">
+                                    <input type="checkbox" id="status-aktif" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"/>
+                                    <label for="status-aktif" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+                                </div>
+                                <span id="status-text" class="text-sm text-gray-700">Tidak Aktif</span>
+                            </div>
+                            
+                            <div class="pt-4">
+                                <button id="save-settings" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded">Simpan Pengaturan</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <svg class="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm text-yellow-700">
+                                    Pengaturan ini akan mengubah tampilan halaman utama. Pastikan tanggal dan status pengumuman sudah benar.
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="overflow-x-auto bg-white border border-gray-200 rounded-lg">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">NISN</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="data-table" class="bg-white divide-y divide-gray-200">
-                            <!-- Data will be populated here -->
-                        </tbody>
-                    </table>
+                <!-- Ubah Password Tab -->
+                <div id="content-password" class="tab-content hidden">
+                    <div class="bg-gray-50 p-5 rounded-lg mb-6">
+                        <h2 class="text-lg font-medium text-gray-800 mb-4">Ubah Username dan Password</h2>
+                        
+                        <div id="password-error" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 hidden">
+                            <p class="font-medium">Password lama salah!</p>
+                            <p class="text-sm">Silakan periksa kembali password lama Anda.</p>
+                        </div>
+                        
+                        <div id="password-success" class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 hidden">
+                            <p class="font-medium">Berhasil!</p>
+                            <p class="text-sm">Username dan password berhasil diubah.</p>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Username Baru</label>
+                                <input type="text" id="new-username" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Username baru">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Password Lama</label>
+                                <input type="password" id="old-password" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Password lama">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Password Baru</label>
+                                <input type="password" id="new-password" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Password baru">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Konfirmasi Password Baru</label>
+                                <input type="password" id="confirm-password" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Konfirmasi password baru">
+                            </div>
+                            
+                            <div class="pt-4">
+                                <button id="save-password" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded">Ubah Password</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                
-                <div class="mt-4 text-right text-sm text-gray-500">
-                    Total: <span id="total-count">0</span> siswa
-                </div>
+            </div>
+            
+            <div class="mt-4 text-center">
+                <a href="index.html" class="text-blue-600 hover:text-blue-800">Lihat Halaman Utama</a>
             </div>
         </div>
     </div>
 
     <script>
+        // Initialize admin credentials
+        if (!localStorage.getItem('adminCredentials')) {
+            localStorage.setItem('adminCredentials', JSON.stringify({
+                username: "admin",
+                password: "admin"
+            }));
+        }
+        
+        // Initialize kelulusan settings
+        if (!localStorage.getItem('kelulusanSettings')) {
+            const defaultDate = new Date("2025-06-02T00:00:00+07:00");
+            localStorage.setItem('kelulusanSettings', JSON.stringify({
+                tanggal: defaultDate.toISOString(),
+                aktif: true,
+                tahunAjaran: "2024/2025"
+            }));
+        }
+        
         // Load student data from localStorage if available
         let siswaData = JSON.parse(localStorage.getItem('siswaData')) || [
             { nisn: "1234567890", nama: "Ahmad Fauzi", status: "Lulus" },
@@ -104,6 +273,65 @@
         // Save initial data if not already in localStorage
         if (!localStorage.getItem('siswaData')) {
             localStorage.setItem('siswaData', JSON.stringify(siswaData));
+        }
+        
+        // Login functionality
+        document.getElementById("login-btn").addEventListener("click", function() {
+            const username = document.getElementById("login-username").value.trim();
+            const password = document.getElementById("login-password").value;
+            const adminCredentials = JSON.parse(localStorage.getItem('adminCredentials'));
+            
+            if (username === adminCredentials.username && password === adminCredentials.password) {
+                document.getElementById("login-section").classList.add("hidden");
+                document.getElementById("admin-panel").classList.remove("hidden");
+                document.getElementById("login-error").classList.add("hidden");
+                
+                // Load data and settings
+                renderDataTable();
+                loadSettings();
+            } else {
+                document.getElementById("login-error").classList.remove("hidden");
+            }
+        });
+        
+        // Logout functionality
+        document.getElementById("logout-btn").addEventListener("click", function() {
+            document.getElementById("login-section").classList.remove("hidden");
+            document.getElementById("admin-panel").classList.add("hidden");
+            document.getElementById("login-username").value = "";
+            document.getElementById("login-password").value = "";
+        });
+        
+        // Tab functionality
+        document.getElementById("tab-data").addEventListener("click", function() {
+            showTab("data");
+        });
+        
+        document.getElementById("tab-settings").addEventListener("click", function() {
+            showTab("settings");
+        });
+        
+        document.getElementById("tab-password").addEventListener("click", function() {
+            showTab("password");
+        });
+        
+        function showTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll(".tab-content").forEach(tab => {
+                tab.classList.add("hidden");
+            });
+            
+            // Show selected tab content
+            document.getElementById(`content-${tabName}`).classList.remove("hidden");
+            
+            // Update tab styles
+            document.querySelectorAll("#tab-data, #tab-settings, #tab-password").forEach(tab => {
+                tab.classList.remove("text-blue-600", "border-b-2", "border-blue-600");
+                tab.classList.add("text-gray-500");
+            });
+            
+            document.getElementById(`tab-${tabName}`).classList.add("text-blue-600", "border-b-2", "border-blue-600");
+            document.getElementById(`tab-${tabName}`).classList.remove("text-gray-500");
         }
         
         // Render data table
@@ -304,8 +532,90 @@
             reader.readAsText(file);
         });
         
-        // Initialize
-        renderDataTable();
+        // Load settings
+        function loadSettings() {
+            const settings = JSON.parse(localStorage.getItem('kelulusanSettings'));
+            
+            // Format date for input
+            const date = new Date(settings.tanggal);
+            const formattedDate = date.toISOString().slice(0, 16);
+            
+            document.getElementById("tahun-ajaran-input").value = settings.tahunAjaran;
+            document.getElementById("tanggal-pengumuman-input").value = formattedDate;
+            document.getElementById("status-aktif").checked = settings.aktif;
+            document.getElementById("status-text").textContent = settings.aktif ? "Aktif" : "Tidak Aktif";
+        }
+        
+        // Toggle status text
+        document.getElementById("status-aktif").addEventListener("change", function() {
+            document.getElementById("status-text").textContent = this.checked ? "Aktif" : "Tidak Aktif";
+        });
+        
+        // Save settings
+        document.getElementById("save-settings").addEventListener("click", function() {
+            const tahunAjaran = document.getElementById("tahun-ajaran-input").value.trim();
+            const tanggal = document.getElementById("tanggal-pengumuman-input").value;
+            const aktif = document.getElementById("status-aktif").checked;
+            
+            if (!tahunAjaran || !tanggal) {
+                alert("Tahun ajaran dan tanggal pengumuman harus diisi!");
+                return;
+            }
+            
+            const settings = {
+                tahunAjaran,
+                tanggal: new Date(tanggal).toISOString(),
+                aktif
+            };
+            
+            localStorage.setItem('kelulusanSettings', JSON.stringify(settings));
+            alert("Pengaturan berhasil disimpan!");
+        });
+        
+        // Change password
+        document.getElementById("save-password").addEventListener("click", function() {
+            const newUsername = document.getElementById("new-username").value.trim();
+            const oldPassword = document.getElementById("old-password").value;
+            const newPassword = document.getElementById("new-password").value;
+            const confirmPassword = document.getElementById("confirm-password").value;
+            
+            // Hide messages
+            document.getElementById("password-error").classList.add("hidden");
+            document.getElementById("password-success").classList.add("hidden");
+            
+            // Get current credentials
+            const adminCredentials = JSON.parse(localStorage.getItem('adminCredentials'));
+            
+            // Validate
+            if (!newUsername || !oldPassword || !newPassword || !confirmPassword) {
+                alert("Semua field harus diisi!");
+                return;
+            }
+            
+            if (oldPassword !== adminCredentials.password) {
+                document.getElementById("password-error").classList.remove("hidden");
+                return;
+            }
+            
+            if (newPassword !== confirmPassword) {
+                alert("Password baru dan konfirmasi password tidak cocok!");
+                return;
+            }
+            
+            // Update credentials
+            adminCredentials.username = newUsername;
+            adminCredentials.password = newPassword;
+            localStorage.setItem('adminCredentials', JSON.stringify(adminCredentials));
+            
+            // Show success message
+            document.getElementById("password-success").classList.remove("hidden");
+            
+            // Clear form
+            document.getElementById("new-username").value = "";
+            document.getElementById("old-password").value = "";
+            document.getElementById("new-password").value = "";
+            document.getElementById("confirm-password").value = "";
+        });
     </script>
 </body>
 </html>
