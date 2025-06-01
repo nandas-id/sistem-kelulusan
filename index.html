@@ -52,7 +52,7 @@
         <header class="text-center mb-8">
             <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">Sistem Informasi Kelulusan</h1>
             <div class="h-1 w-24 bg-yellow-400 mx-auto rounded-full"></div>
-            <p class="text-blue-100 mt-4">Tahun Ajaran 2024/2025</p>
+            <p class="text-blue-100 mt-4" id="tahun-ajaran">Tahun Ajaran 2024/2025</p>
         </header>
 
         <div id="countdown-section" class="countdown-container rounded-xl p-6 md:p-8 text-center mb-8">
@@ -75,7 +75,15 @@
                     <div class="text-xs md:text-sm text-blue-100">Detik</div>
                 </div>
             </div>
-            <p class="text-white text-lg">2 Juni 2025 pukul 00.00 WIB</p>
+            <p class="text-white text-lg" id="tanggal-pengumuman">2 Juni 2025 pukul 00.00 WIB</p>
+        </div>
+
+        <div id="nonaktif-section" class="bg-white rounded-xl p-6 md:p-8 shadow-lg text-center hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-yellow-500 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <h2 class="text-xl md:text-2xl font-semibold text-gray-800 mb-4">Pengumuman Belum Tersedia</h2>
+            <p class="text-gray-600">Mohon maaf, pengumuman kelulusan belum dapat diakses saat ini. Silakan cek kembali nanti.</p>
         </div>
 
         <div id="check-section" class="bg-white rounded-xl p-6 md:p-8 shadow-lg hidden">
@@ -105,6 +113,18 @@
     </div>
 
     <script>
+        // Load settings from localStorage
+        const kelulusanSettings = JSON.parse(localStorage.getItem('kelulusanSettings')) || {
+            tanggal: "2025-06-02T00:00:00+07:00",
+            aktif: true,
+            tahunAjaran: "2024/2025"
+        };
+        
+        // Save initial settings if not already in localStorage
+        if (!localStorage.getItem('kelulusanSettings')) {
+            localStorage.setItem('kelulusanSettings', JSON.stringify(kelulusanSettings));
+        }
+        
         // Load student data from localStorage if available
         let siswaData = JSON.parse(localStorage.getItem('siswaData')) || [
             { nisn: "1234567890", nama: "Ahmad Fauzi", status: "Lulus" },
@@ -117,13 +137,23 @@
             localStorage.setItem('siswaData', JSON.stringify(siswaData));
         }
 
-        // Target date: June 2, 2025 00:00:00 WIB (GMT+7)
-        const targetDate = new Date("2025-06-02T00:00:00+07:00").getTime();
+        // Update tahun ajaran
+        document.getElementById("tahun-ajaran").textContent = `Tahun Ajaran ${kelulusanSettings.tahunAjaran}`;
+        
+        // Format tanggal untuk tampilan
+        const targetDate = new Date(kelulusanSettings.tanggal);
+        const options = { day: 'numeric', month: 'long', year: 'numeric' };
+        const formattedDate = targetDate.toLocaleDateString('id-ID', options);
+        const hours = targetDate.getHours().toString().padStart(2, '0');
+        const minutes = targetDate.getMinutes().toString().padStart(2, '0');
+        
+        document.getElementById("tanggal-pengumuman").textContent = 
+            `${formattedDate} pukul ${hours}.${minutes} WIB`;
         
         // Update countdown
         function updateCountdown() {
             const now = new Date().getTime();
-            const distance = targetDate - now;
+            const distance = targetDate.getTime() - now;
             
             // Time calculations
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -137,19 +167,31 @@
             document.getElementById("minutes").innerHTML = minutes.toString().padStart(2, '0');
             document.getElementById("seconds").innerHTML = seconds.toString().padStart(2, '0');
             
-            // If the countdown is over, show the check section
+            // If the countdown is over, check if active
             if (distance < 0) {
                 clearInterval(countdownInterval);
                 document.getElementById("countdown-section").classList.add("hidden");
-                document.getElementById("check-section").classList.remove("hidden");
+                
+                // Check if announcement is active
+                if (kelulusanSettings.aktif) {
+                    document.getElementById("check-section").classList.remove("hidden");
+                } else {
+                    document.getElementById("nonaktif-section").classList.remove("hidden");
+                }
             }
         }
         
         // Check if the target date has passed
         const now = new Date().getTime();
-        if (now >= targetDate) {
+        if (now >= targetDate.getTime()) {
             document.getElementById("countdown-section").classList.add("hidden");
-            document.getElementById("check-section").classList.remove("hidden");
+            
+            // Check if announcement is active
+            if (kelulusanSettings.aktif) {
+                document.getElementById("check-section").classList.remove("hidden");
+            } else {
+                document.getElementById("nonaktif-section").classList.remove("hidden");
+            }
         } else {
             // Update the countdown every 1 second
             updateCountdown();
