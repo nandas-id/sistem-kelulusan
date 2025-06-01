@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cek Kelulusan Siswa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            min-height: 100vh;
+        }
+        .countdown-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .countdown-box {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .result-card {
+            transition: all 0.3s ease;
+        }
+        .result-card.lulus {
+            border-left: 6px solid #10b981;
+        }
+        .result-card.tidak-lulus {
+            border-left: 6px solid #ef4444;
+        }
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+            }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-0">
+    <div class="container mx-auto max-w-3xl py-8 px-4 md:py-12">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">Sistem Informasi Kelulusan</h1>
+            <div class="h-1 w-24 bg-yellow-400 mx-auto rounded-full"></div>
+            <p class="text-blue-100 mt-4">Tahun Ajaran 2024/2025</p>
+        </header>
+
+        <div id="countdown-section" class="countdown-container rounded-xl p-6 md:p-8 text-center mb-8">
+            <h2 class="text-xl md:text-2xl font-semibold text-white mb-6">Pengumuman Kelulusan Akan Dibuka Pada:</h2>
+            <div class="grid grid-cols-4 gap-2 md:gap-4 mb-6">
+                <div class="countdown-box p-3 md:p-4">
+                    <div id="days" class="text-2xl md:text-4xl font-bold text-white">00</div>
+                    <div class="text-xs md:text-sm text-blue-100">Hari</div>
+                </div>
+                <div class="countdown-box p-3 md:p-4">
+                    <div id="hours" class="text-2xl md:text-4xl font-bold text-white">00</div>
+                    <div class="text-xs md:text-sm text-blue-100">Jam</div>
+                </div>
+                <div class="countdown-box p-3 md:p-4">
+                    <div id="minutes" class="text-2xl md:text-4xl font-bold text-white">00</div>
+                    <div class="text-xs md:text-sm text-blue-100">Menit</div>
+                </div>
+                <div class="countdown-box p-3 md:p-4">
+                    <div id="seconds" class="text-2xl md:text-4xl font-bold text-white">00</div>
+                    <div class="text-xs md:text-sm text-blue-100">Detik</div>
+                </div>
+            </div>
+            <p class="text-white text-lg">2 Juni 2025 pukul 00.00 WIB</p>
+        </div>
+
+        <div id="check-section" class="bg-white rounded-xl p-6 md:p-8 shadow-lg hidden">
+            <h2 class="text-xl md:text-2xl font-semibold text-gray-800 mb-6 text-center">Cek Status Kelulusan</h2>
+            <div class="mb-6">
+                <label for="nisn" class="block text-sm font-medium text-gray-700 mb-2">Nomor Induk Siswa Nasional (NISN)</label>
+                <input type="text" id="nisn" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="Masukkan NISN Anda">
+                <p class="text-xs text-gray-500 mt-1">Contoh: 1234567890</p>
+            </div>
+            <button id="check-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200 pulse">
+                Cek Kelulusan
+            </button>
+            
+            <div id="result" class="mt-8 hidden">
+                <!-- Result will be displayed here -->
+            </div>
+            
+            <div id="error" class="mt-6 hidden bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded">
+                <p class="font-medium">NISN tidak ditemukan!</p>
+                <p class="text-sm">Silakan periksa kembali NISN yang Anda masukkan.</p>
+            </div>
+        </div>
+        
+        <footer class="mt-8 text-center text-blue-100 text-sm">
+            <p>&copy; 2025 Sistem Informasi Kelulusan. Hak Cipta Dilindungi.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Load student data from localStorage if available
+        let siswaData = JSON.parse(localStorage.getItem('siswaData')) || [
+            { nisn: "1234567890", nama: "Ahmad Fauzi", status: "Lulus" },
+            { nisn: "0987654321", nama: "Siti Nurhaliza", status: "Lulus" },
+            { nisn: "5678901234", nama: "Budi Santoso", status: "Tidak Lulus" }
+        ];
+        
+        // Save initial data if not already in localStorage
+        if (!localStorage.getItem('siswaData')) {
+            localStorage.setItem('siswaData', JSON.stringify(siswaData));
+        }
+
+        // Target date: June 2, 2025 00:00:00 WIB (GMT+7)
+        const targetDate = new Date("2025-06-02T00:00:00+07:00").getTime();
+        
+        // Update countdown
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+            
+            // Time calculations
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            // Display the result
+            document.getElementById("days").innerHTML = days.toString().padStart(2, '0');
+            document.getElementById("hours").innerHTML = hours.toString().padStart(2, '0');
+            document.getElementById("minutes").innerHTML = minutes.toString().padStart(2, '0');
+            document.getElementById("seconds").innerHTML = seconds.toString().padStart(2, '0');
+            
+            // If the countdown is over, show the check section
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                document.getElementById("countdown-section").classList.add("hidden");
+                document.getElementById("check-section").classList.remove("hidden");
+            }
+        }
+        
+        // Check if the target date has passed
+        const now = new Date().getTime();
+        if (now >= targetDate) {
+            document.getElementById("countdown-section").classList.add("hidden");
+            document.getElementById("check-section").classList.remove("hidden");
+        } else {
+            // Update the countdown every 1 second
+            updateCountdown();
+            const countdownInterval = setInterval(updateCountdown, 1000);
+        }
+        
+        // Check NISN function
+        document.getElementById("check-btn").addEventListener("click", function() {
+            // Reload the latest data from localStorage
+            siswaData = JSON.parse(localStorage.getItem('siswaData')) || siswaData;
+            
+            const nisn = document.getElementById("nisn").value.trim();
+            const resultDiv = document.getElementById("result");
+            const errorDiv = document.getElementById("error");
+            
+            // Hide previous results
+            resultDiv.classList.add("hidden");
+            errorDiv.classList.add("hidden");
+            
+            // Find student by NISN
+            const siswa = siswaData.find(s => s.nisn === nisn);
+            
+            if (siswa) {
+                // Create result card
+                const statusClass = siswa.status === "Lulus" ? "lulus" : "tidak-lulus";
+                const statusColor = siswa.status === "Lulus" ? "text-green-600" : "text-red-600";
+                const statusBg = siswa.status === "Lulus" ? "bg-green-50" : "bg-red-50";
+                
+                resultDiv.innerHTML = `
+                    <div class="result-card ${statusClass} bg-gray-50 rounded-lg p-6 shadow-sm">
+                        <h3 class="text-lg font-medium text-gray-800 mb-4">Hasil Pencarian</h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Nama Lengkap:</span>
+                                <span class="font-medium text-gray-800">${siswa.nama}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">NISN:</span>
+                                <span class="font-medium text-gray-800">${siswa.nisn}</span>
+                            </div>
+                            <div class="border-t border-gray-200 my-2"></div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Status:</span>
+                                <span class="font-bold ${statusColor} px-3 py-1 rounded-full ${statusBg}">${siswa.status}</span>
+                            </div>
+                        </div>
+                        ${siswa.status === "Lulus" ? 
+                            `<div class="mt-4 text-center">
+                                <p class="text-green-600 font-medium">Selamat! Anda dinyatakan lulus.</p>
+                            </div>` : 
+                            `<div class="mt-4 text-center">
+                                <p class="text-red-600 font-medium">Mohon maaf, Anda belum dinyatakan lulus.</p>
+                            </div>`
+                        }
+                    </div>
+                `;
+                resultDiv.classList.remove("hidden");
+            } else {
+                // Show error message
+                errorDiv.classList.remove("hidden");
+            }
+        });
+    </script>
+</body>
+</html>
