@@ -1,7 +1,21 @@
-# Membuat file data.js berdasarkan data yang sudah dikonversi dari PDF
+const kelulusanSettings = {
+  tahunAjaran: "2024/2025",
+  tanggal: "2025-06-02T22:00:00+07:00", // ganti tanggal dan jam sesuai kebutuhan
+  aktif: true
+};
 
-data = [
-  { nisn: "1234567890", nama: "Ahmad Fauzi", status: "Lulus" },
+const siswaData = [
+  {
+    nisn: "1234567890",
+    nama: "Ahmad Fauzi",
+    status: "Lulus"
+  },
+  {
+    nisn: "5678901234",
+    nama: "Budi Santoso",
+    status: "Tidak Lulus"
+  },
+    { nisn: "1234567890", nama: "Ahmad Fauzi", status: "Lulus" },
             { nisn: "0103674988", nama: "Abdillah Farrel Indra Jaya", status: "Lulus" },
             { nisn: "3106256519", nama: "Abim Pedro Wijaksono", status: "Lulus" },
             { nisn: "0108635814", nama: "Ahmad Ridwan Fahrezi", status: "Lulus" },
@@ -204,15 +218,10 @@ data = [
             { nisn: "0108139290", nama: "Talita Faras Anindiya", status: "Lulus" },
             { nisn: "0108099694", nama: "Tasya", status: "Lulus" },
             { nisn: "3105030977", nama: "Tefa Sekar Pralista", status: "Lulus" },
-            { nisn: "5678901234", nama: "Budi Santoso", status: "Tidak Lulus" }
-]
-
-# Menulis ke file data.js
-file_path = "/mnt/data/data.js"
-with open(file_path, "w", encoding="utf-8") as f:
-    f.write("const siswaLulus = [\n")
-    for siswa in data:
-        f.write(f'  {{ nisn: "{siswa["nisn"]}", nama: "{siswa["nama"]}", status: "{siswa["status"]}" }},\n')
-    f.write("];\n\nexport default siswaLulus;\n")
-
-file_path
+            { nisn: "5678901234", nama: "Budi Santoso", status: "Tidak Lulus" },
+  {
+    nisn: "7890123456",
+    nama: "Citra Dewi",
+    status: "Lulus"
+  }
+];
