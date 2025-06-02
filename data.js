@@ -5,16 +5,6 @@ const kelulusanSettings = {
 };
 
 const siswaData = [
-  {
-    nisn: "1234567890",
-    nama: "Ahmad Fauzi",
-    status: "Lulus"
-  },
-  {
-    nisn: "5678901234",
-    nama: "Budi Santoso",
-    status: "Tidak Lulus"
-  },
     { nisn: "1234567890", nama: "Admin Sekolah", status: "Tidak Lulus" },
             { nisn: "0103674988", nama: "Abdillah Farrel Indra Jaya", status: "Lulus" },
             { nisn: "3106256519", nama: "Abim Pedro Wijaksono", status: "Lulus" },
@@ -217,11 +207,5 @@ const siswaData = [
             { nisn: "0098328053", nama: "Shifa Arifiani Azahra", status: "Lulus" },
             { nisn: "0108139290", nama: "Talita Faras Anindiya", status: "Lulus" },
             { nisn: "0108099694", nama: "Tasya", status: "Lulus" },
-            { nisn: "3105030977", nama: "Tefa Sekar Pralista", status: "Lulus" },
-            { nisn: "5678901234", nama: "Budi Santoso", status: "Tidak Lulus" },
-  {
-    nisn: "7890123456",
-    nama: "Citra Dewi",
-    status: "Lulus"
-  }
+            { nisn: "3105030977", nama: "Tefa Sekar Pralista", status: "Lulus" }
 ];
