@@ -15,7 +15,7 @@ const siswaData = [
     nama: "Budi Santoso",
     status: "Tidak Lulus"
   },
-    { nisn: "1234567890", nama: "Ahmad Fauzi", status: "Lulus" },
+    { nisn: "1234567890", nama: "Admin Sekolah", status: "Tidak Lulus" },
             { nisn: "0103674988", nama: "Abdillah Farrel Indra Jaya", status: "Lulus" },
             { nisn: "3106256519", nama: "Abim Pedro Wijaksono", status: "Lulus" },
             { nisn: "0108635814", nama: "Ahmad Ridwan Fahrezi", status: "Lulus" },
