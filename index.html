@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Cek Kelulusan Siswa</title>
+  <title>Pengumuman Kelulusan</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
@@ -12,25 +12,14 @@
       background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
       min-height: 100vh;
     }
-    .countdown-container {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-    .countdown-box {
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: 0.5rem;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
+    .countdown-box { background: rgba(255,255,255,0.15); border-radius: 0.5rem; }
     .result-card.lulus { border-left: 6px solid #10b981; }
     .result-card.tidak-lulus { border-left: 6px solid #ef4444; }
-    .pulse {
-      animation: pulse 2s infinite;
-    }
+    .pulse { animation: pulse 2s infinite; }
     @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
-      70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+      0% { box-shadow: 0 0 0 0 rgba(59,130,246,0.7); }
+      70% { box-shadow: 0 0 0 10px rgba(59,130,246,0); }
+      100% { box-shadow: 0 0 0 0 rgba(59,130,246,0); }
     }
   </style>
 </head>
@@ -40,40 +29,33 @@
       <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">Pengumuman Kelulusan</h1>
       <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">SMP Negeri 26 Bandar Lampung</h1>
       <div class="h-1 w-24 bg-yellow-400 mx-auto rounded-full"></div>
-      <p class="text-blue-100 mt-4" id="tahun-ajaran"></p>
+      <p class="text-blue-100 mt-4" id="tahun-ajaran">Tahun Ajaran ...</p>
     </header>
 
-    <div id="countdown-section" class="countdown-container rounded-xl p-6 md:p-8 text-center mb-8">
+    <div id="countdown-section" class="bg-white/10 backdrop-blur rounded-xl p-6 text-center mb-8">
       <h2 class="text-xl md:text-2xl font-semibold text-white mb-6">Pengumuman Kelulusan Akan Dibuka Pada:</h2>
-      <div class="grid grid-cols-4 gap-2 md:gap-4 mb-6">
-        <div class="countdown-box p-3 md:p-4"><div id="days" class="text-2xl md:text-4xl font-bold text-white">00</div><div class="text-xs md:text-sm text-blue-100">Hari</div></div>
-        <div class="countdown-box p-3 md:p-4"><div id="hours" class="text-2xl md:text-4xl font-bold text-white">00</div><div class="text-xs md:text-sm text-blue-100">Jam</div></div>
-        <div class="countdown-box p-3 md:p-4"><div id="minutes" class="text-2xl md:text-4xl font-bold text-white">00</div><div class="text-xs md:text-sm text-blue-100">Menit</div></div>
-        <div class="countdown-box p-3 md:p-4"><div id="seconds" class="text-2xl md:text-4xl font-bold text-white">00</div><div class="text-xs md:text-sm text-blue-100">Detik</div></div>
+      <div class="grid grid-cols-4 gap-2 md:gap-4 mb-6 text-white">
+        <div class="countdown-box p-3"><div id="days" class="text-3xl font-bold">00</div><div>Hari</div></div>
+        <div class="countdown-box p-3"><div id="hours" class="text-3xl font-bold">00</div><div>Jam</div></div>
+        <div class="countdown-box p-3"><div id="minutes" class="text-3xl font-bold">00</div><div>Menit</div></div>
+        <div class="countdown-box p-3"><div id="seconds" class="text-3xl font-bold">00</div><div>Detik</div></div>
       </div>
       <p class="text-white text-lg" id="tanggal-pengumuman"></p>
     </div>
 
-    <div id="nonaktif-section" class="bg-white rounded-xl p-6 md:p-8 shadow-lg text-center hidden">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-yellow-500 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-      </svg>
-      <h2 class="text-xl md:text-2xl font-semibold text-gray-800 mb-4">Pengumuman Belum Tersedia</h2>
+    <div id="nonaktif-section" class="bg-white rounded-xl p-6 shadow text-center hidden">
+      <h2 class="text-xl font-semibold text-gray-800 mb-4">Pengumuman Belum Tersedia</h2>
       <p class="text-gray-600">Mohon maaf, pengumuman kelulusan belum dapat diakses saat ini. Silakan cek kembali nanti.</p>
     </div>
 
-    <div id="check-section" class="bg-white rounded-xl p-6 md:p-8 shadow-lg hidden">
-      <h2 class="text-xl md:text-2xl font-semibold text-gray-800 mb-6 text-center">Cek Status Kelulusan</h2>
-      <div class="mb-6">
-        <label for="nisn" class="block text-sm font-medium text-gray-700 mb-2">Nomor Induk Siswa Nasional (NISN)</label>
-        <input type="text" id="nisn" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="Masukkan NISN Anda">
-        <p class="text-xs text-gray-500 mt-1">Contoh: 1234567890</p>
-      </div>
-      <button id="check-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200 pulse">Cek Kelulusan</button>
-      <div id="result" class="mt-8 hidden"></div>
+    <div id="check-section" class="bg-white rounded-xl p-6 shadow hidden">
+      <h2 class="text-xl font-semibold text-gray-800 mb-6 text-center">Cek Status Kelulusan</h2>
+      <label class="block mb-2 text-sm">Masukkan NISN</label>
+      <input id="nisn" type="text" class="w-full border rounded px-4 py-2 mb-4" placeholder="Contoh: 1234567890" />
+      <button id="check-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded pulse">Cek Kelulusan</button>
+      <div id="result" class="mt-6 hidden"></div>
       <div id="error" class="mt-6 hidden bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded">
         <p class="font-medium">NISN tidak ditemukan!</p>
-        <p class="text-sm">Silakan periksa kembali NISN yang Anda masukkan.</p>
       </div>
     </div>
 
@@ -82,89 +64,71 @@
     </footer>
   </div>
 
-  <!-- Load data.js dari GitHub -->
+  <!-- Load data dari GitHub -->
   <script src="https://nandas-id.github.io/sistem-kelulusan/data.js"></script>
 
-  <!-- Script utama -->
   <script>
-    document.getElementById("tahun-ajaran").textContent = `Tahun Ajaran ${kelulusanSettings.tahunAjaran}`;
+    document.addEventListener("DOMContentLoaded", () => {
+      const tahunAjaran = kelulusanSettings.tahunAjaran;
+      const targetDate = new Date(kelulusanSettings.tanggal);
+      const aktif = kelulusanSettings.aktif;
 
-    const targetDate = new Date(kelulusanSettings.tanggal);
-    const options = { day: 'numeric', month: 'long', year: 'numeric' };
-    const formattedDate = targetDate.toLocaleDateString('id-ID', options);
-    const jam = targetDate.getHours().toString().padStart(2, '0');
-    const menit = targetDate.getMinutes().toString().padStart(2, '0');
+      document.getElementById("tahun-ajaran").textContent = `Tahun Ajaran ${tahunAjaran}`;
+      document.getElementById("tanggal-pengumuman").textContent =
+        targetDate.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" }) +
+        ` pukul ${targetDate.getHours().toString().padStart(2, '0')}.${targetDate.getMinutes().toString().padStart(2, '0')} WIB`;
 
-    document.getElementById("tanggal-pengumuman").textContent = `${formattedDate} pukul ${jam}.${menit} WIB`;
+      function updateCountdown() {
+        const now = new Date();
+        const distance = targetDate - now;
+        if (distance <= 0) {
+          document.getElementById("countdown-section").classList.add("hidden");
+          if (aktif) {
+            document.getElementById("check-section").classList.remove("hidden");
+          } else {
+            document.getElementById("nonaktif-section").classList.remove("hidden");
+          }
+          return;
+        }
 
-    function updateCountdown() {
-      const now = new Date().getTime();
-      const distance = targetDate.getTime() - now;
+        const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((distance % (1000 * 60)) / 1000);
 
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-      document.getElementById("days").textContent = days.toString().padStart(2, '0');
-      document.getElementById("hours").textContent = hours.toString().padStart(2, '0');
-      document.getElementById("minutes").textContent = minutes.toString().padStart(2, '0');
-      document.getElementById("seconds").textContent = seconds.toString().padStart(2, '0');
-
-      if (distance < 0) {
-        clearInterval(interval);
-        document.getElementById("countdown-section").classList.add("hidden");
-        kelulusanSettings.aktif ?
-          document.getElementById("check-section").classList.remove("hidden") :
-          document.getElementById("nonaktif-section").classList.remove("hidden");
+        document.getElementById("days").textContent = d.toString().padStart(2, "0");
+        document.getElementById("hours").textContent = h.toString().padStart(2, "0");
+        document.getElementById("minutes").textContent = m.toString().padStart(2, "0");
+        document.getElementById("seconds").textContent = s.toString().padStart(2, "0");
       }
-    }
 
-    const now = new Date().getTime();
-    if (now >= targetDate.getTime()) {
-      document.getElementById("countdown-section").classList.add("hidden");
-      kelulusanSettings.aktif ?
-        document.getElementById("check-section").classList.remove("hidden") :
-        document.getElementById("nonaktif-section").classList.remove("hidden");
-    } else {
       updateCountdown();
-      const interval = setInterval(updateCountdown, 1000);
-    }
+      setInterval(updateCountdown, 1000);
 
-    document.getElementById("check-btn").addEventListener("click", () => {
-      const nisn = document.getElementById("nisn").value.trim();
-      const resultDiv = document.getElementById("result");
-      const errorDiv = document.getElementById("error");
-      resultDiv.classList.add("hidden");
-      errorDiv.classList.add("hidden");
+      // Cek NISN
+      document.getElementById("check-btn").addEventListener("click", () => {
+        const nisnInput = document.getElementById("nisn").value.trim();
+        const siswa = siswaData.find(s => s.nisn === nisnInput);
+        const result = document.getElementById("result");
+        const error = document.getElementById("error");
 
-      const siswa = siswaData.find(s => s.nisn === nisn);
+        result.classList.add("hidden");
+        error.classList.add("hidden");
 
-      if (siswa) {
-        const statusClass = siswa.status === "Lulus" ? "lulus" : "tidak-lulus";
-        const statusColor = siswa.status === "Lulus" ? "text-green-600" : "text-red-600";
-        const statusBg = siswa.status === "Lulus" ? "bg-green-50" : "bg-red-50";
-
-        resultDiv.innerHTML = `
-          <div class="result-card ${statusClass} bg-gray-50 rounded-lg p-6 shadow-sm">
-            <h3 class="text-lg font-medium text-gray-800 mb-4">Hasil Pencarian</h3>
-            <div class="space-y-3">
-              <div class="flex justify-between"><span class="text-gray-600">Nama Lengkap:</span><span class="font-medium text-gray-800">${siswa.nama}</span></div>
-              <div class="flex justify-between"><span class="text-gray-600">NISN:</span><span class="font-medium text-gray-800">${siswa.nisn}</span></div>
-              <div class="border-t border-gray-200 my-2"></div>
-              <div class="flex justify-between items-center">
-                <span class="text-gray-600">Status:</span>
-                <span class="font-bold ${statusColor} px-3 py-1 rounded-full ${statusBg}">${siswa.status}</span>
-              </div>
-            </div>
-            <div class="mt-4 text-center">
-              <p class="${statusColor} font-medium">${siswa.status === "Lulus" ? "Selamat! Anda dinyatakan LULUS." : "Mohon maaf, Anda belum dinyatakan lulus."}</p>
-            </div>
-          </div>`;
-        resultDiv.classList.remove("hidden");
-      } else {
-        errorDiv.classList.remove("hidden");
-      }
+        if (siswa) {
+          const statusClass = siswa.status === "Lulus" ? "lulus text-green-600 bg-green-50" : "tidak-lulus text-red-600 bg-red-50";
+          result.innerHTML = `
+            <div class="result-card ${statusClass} p-4 rounded shadow">
+              <h3 class="text-lg font-semibold mb-2">Hasil Kelulusan</h3>
+              <p><strong>Nama:</strong> ${siswa.nama}</p>
+              <p><strong>NISN:</strong> ${siswa.nisn}</p>
+              <p class="mt-2 font-bold">${siswa.status === "Lulus" ? "Selamat, Anda dinyatakan LULUS." : "Mohon maaf, Anda dinyatakan TIDAK LULUS."}</p>
+            </div>`;
+          result.classList.remove("hidden");
+        } else {
+          error.classList.remove("hidden");
+        }
+      });
     });
   </script>
 </body>
