@@ -115,17 +115,21 @@
         result.classList.add("hidden");
         error.classList.add("hidden");
 
-        if (siswa) {
-          const statusClass = siswa.status === "Lulus" ? "lulus text-green-600 bg-green-50" : "tidak-lulus text-red-600 bg-red-50";
-          result.innerHTML = `
-            <div class="result-card ${statusClass} p-4 rounded shadow">
-              <h3 class="text-lg font-semibold mb-2">Hasil Kelulusan</h3>
-              <p><strong>Nama:</strong> ${siswa.nama}</p>
-              <p><strong>NISN:</strong> ${siswa.nisn}</p>
-              <p class="mt-2 font-bold">${siswa.status === "Lulus" ? "Selamat, Anda dinyatakan LULUS." : "Mohon maaf, Anda dinyatakan TIDAK LULUS."}</p>
-            </div>`;
-          result.classList.remove("hidden");
-        } else {
+if (siswa) {
+  const isLulus = siswa.status === "Lulus";
+  const statusColor = isLulus ? "text-green-600" : "text-red-600";
+  result.innerHTML = `
+    <div class="result-card p-6 rounded-lg shadow-lg bg-white bg-opacity-20 text-center max-w-sm mx-auto">
+      <h2 class="text-3xl font-extrabold mb-1">${siswa.nama}</h2>
+      <p class="text-lg text-gray-200 mb-4">${siswa.nisn}</p>
+      <p class="text-xl font-semibold ${statusColor}">
+        Selamat, Anda dinyatakan <br />
+        <span class="block text-4xl mt-2">${isLulus ? "LULUS" : "TIDAK LULUS"}</span>
+      </p>
+    </div>
+  `;
+  result.classList.remove("hidden");
+} else {
           error.classList.remove("hidden");
         }
       });
